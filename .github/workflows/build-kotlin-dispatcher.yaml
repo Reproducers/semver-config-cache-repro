@@ -1,0 +1,42 @@
+name: build-kotlin
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+
+env:
+  GRADLE_ENCRYPTION_KEY: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ 'ubuntu-latest', 'windows-latest', 'macos-latest' ]
+
+    steps:
+      - name: Checkout
+        uses: JavierSegoviaCordoba/reusable-workflows/actions/checkout@main
+
+      - name: Set up Java
+        uses: JavierSegoviaCordoba/reusable-workflows/actions/setup-java@main
+
+      - name: Set up Gradle
+        uses: JavierSegoviaCordoba/reusable-workflows/actions/setup-gradle@main
+        with:
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+      - name: Build
+        run: ./gradlew printSemver
+
+      - name: Upload configuration cache reports
+        continue-on-error: true
+        uses: JavierSegoviaCordoba/reusable-workflows/actions/upload-artifact@main
+        with:
+          name: 'configuration-cache-report-${{ matrix.os }}'
+          path: '**/build/reports/configuration-cache'
