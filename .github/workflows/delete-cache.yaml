@@ -1,0 +1,23 @@
+name: delete-cache
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB_ACTION }}
+  GH_TOKEN: ${{ secrets.TOKEN_GITHUB_ACTION }}
+
+jobs:
+  delete-cache:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: Checkout
+        uses: JavierSegoviaCordoba/reusable-workflows/actions/checkout@main
+
+      - name: Delete cache
+        run: gh cache delete --all
