@@ -32,7 +32,7 @@ jobs:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Build
-        run: ./gradlew printSemver
+        run: ./gradlew help
 
       - name: Upload configuration cache reports
         continue-on-error: true
