@@ -26,8 +26,15 @@ jobs:
       - name: Checkout
         uses: JavierSegoviaCordoba/reusable-workflows/actions/checkout@main
 
-      - name: Delete cache
-        run: gh cache delete --all
+#      - name: Delete cache
+#        run: gh cache delete --all
+
+      - name: Cache JGit
+        id: cache-jgit
+        uses: actions/cache@v4
+        with:
+          path: '~/.config/jgit/config'
+          key: ${{ runner.os }}-jgit
 
       - name: Set up Java
         uses: JavierSegoviaCordoba/reusable-workflows/actions/setup-java@main
