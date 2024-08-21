@@ -1,3 +1,3 @@
 plugins {
-    id("com.javiersc.semver.project") version "0.7.1-20240821.002614-19"
+    id("com.javiersc.semver.project") version "0.7.1-20240821.003144-20"
 }
